@@ -5,6 +5,7 @@
 <table class="table">
   <thead>
   <tr>
+    <th>ID</th>
     <th>Nome</th>
     <th>Sobrenome</th>
     <th>Telefone</th>
@@ -14,8 +15,10 @@
   </thead>
   <tbody>
     {% for contato in contatos %}
-      {% if contato.mostrar %}
       <tr>
+        <td>
+          {{ contato.id }}
+        </td>
         <td>
           <a href="{% url 'ver_contato' contato.id %}">{{ contato.nome }}</a>
         </td>
@@ -36,7 +39,6 @@
           {%endif%}
         </td>
       </tr>
-      {% endif %}
     {% endfor %}
   </tbody>
 </table>
@@ -51,17 +53,16 @@
 
     {% for pagina in contatos.paginator.page_range %}
       {%if contatos.number == pagina %}
-        <li class="page-item active"><a class="page-link" href="?p={{ pagina }}">{{pagina}}</a></li>
+        <li class="page-item active"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
       {% else %}
-        <li class="page-item"><a class="page-link" href="?p={{ pagina }}">{{pagina}}</a></li>
+        <li class="page-item"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
       {%endif%}
     {%endfor%}
     {% if contatos.has_next %}
-      <li class="page-item"><a class="page-link" href="?p={{ contatos.next_page_number }}">Next</a></li>
+      <li class="page-item"><a class="page-link" href="?p={{ contatos.next_page_number }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">Next</a></li>
     {%else%}
-      <li class="page-item"><a class="page-link" href="?p=1">Next</a></li>
+      <li class="page-item"><a class="page-link" href="?p=1{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">Next</a></li>
     {%endif%}
   </ul>
 </nav>
-
 {% endblock %}
