@@ -1,14 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404 as _404
 from .models import Contato
 from django.core.paginator import Paginator
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
+from django.contrib import messages
 
 def index(request):
     contatos = Contato.objects.order_by('-id').filter(mostrar=True)
     paginator = Paginator(contatos, 15)
-    page = request.GET.get('p')
+    page = request.POST.get('p')
     contatos = paginator.get_page(page)
 
     for contato in contatos:
@@ -29,10 +30,13 @@ def ver_contato(request, contato_id):
     #     raise Http404(f'{e}')
 
 def busca(request):
-    if request.GET.get('termo') is None:
-        raise _404()
+    # if request.POST.get('termo') is None:
+    #     raise _404()
+    if not request.POST.get('termo') or request.POST.get('termo') is None:
+        messages.add_message(request, messages.ERROR, 'O campo termo não pode ficar vazio!')
+        return redirect('index')
 
-    termo = request.GET.get('termo').lower()
+    termo = request.POST.get('termo').lower()
     campo = Concat('nome', Value(' '), 'sobrenome')
 
     contatos = Contato.objects.annotate(nome_completo=campo).filter(
@@ -42,11 +46,15 @@ def busca(request):
     ).order_by('-id')
 
     paginator = Paginator(contatos, 15)
-    page = request.GET.get('p')
+    page = request.POST.get('p')
     contatos = paginator.get_page(page)
 
     for contato in contatos:
         if len(contato.descricao) > 95:
             contato.descricao = contato.descricao[:95] + '...'
+
+    if not contatos.object_list:
+        messages.add_message(request, messages.WARNING, 'Não foram encontrados contatos com os termos da busca.')
+        return redirect('index')
 
     return render(request, 'contatos/index.html', {'contatos': contatos})
