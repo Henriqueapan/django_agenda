@@ -33,7 +33,7 @@ def busca(request):
     # if request.GET.get('termo') is None:
     #     raise _404()
     if not request.GET.get('termo') or request.GET.get('termo') is None:
-        messages.add_message(request, messages.ERROR, 'O campo termo não pode ficar vazio!')
+        messages.add_message(request, messages.ERROR, 'O campo de busca não pode ficar vazio!')
         return redirect('index')
 
     termo = request.GET.get('termo').lower()
