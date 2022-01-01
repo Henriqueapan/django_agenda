@@ -46,9 +46,9 @@
 <nav aria-label="Page navigation example">
   <ul class="pagination">
     {% if contatos.has_previous %}
-      <li class="page-item"><a class="page-link" href="?p={{ contatos.previous_page_number }}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="?p={{ contatos.previous_page_number }}{% if request.GET.termo %}&termo={{ request.GET.termo }}{%endif%}">Previous</a></li>
     {%else%}
-      <li class="page-item"><a class="page-link" href="?p={{ contatos.paginator.num_pages }}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="?p={{ contatos.paginator.num_pages }}{% if request.GET.termo %}&termo={{ request.GET.termo }}{%endif%}">Previous</a></li>
     {%endif%}
 
     {% for pagina in contatos.paginator.page_range %}
