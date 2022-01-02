@@ -32,9 +32,9 @@
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0 flex-nowrap">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form class="form-inline my-2 my-lg-0 flex-nowrap" method="get" action="{% url 'busca' %}">
+      <input class="form-control mr-sm-2" name='termo' type="search" placeholder="Pesquisar pelos contatos" aria-label="Pesquisa">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
     </form>
   </div>
 
