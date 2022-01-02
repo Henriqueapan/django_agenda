@@ -12,11 +12,24 @@ def index(request):
     page = request.GET.get('p')
     contatos = paginator.get_page(page)
 
+    page_diff_lower = 1 - (contatos.number - 2)
+    page_diff_upper = (contatos.number + 2) - (contatos.paginator.num_pages)
+    up_range = (page_diff_lower + 2) if page_diff_lower > 0 else 2 if page_diff_upper <= 0 else 2 - page_diff_upper
+    low_range = (page_diff_upper + 2) if page_diff_upper > 0 else 2 if page_diff_lower <= 0 else 2 - page_diff_lower
+    print(str(up_range) + ' ' + str(low_range))
+    cond_list = []
+    for pagina in contatos.paginator.page_range:
+        cond_list.append((abs(pagina - contatos.number) <= up_range and abs(pagina - contatos.number) > 0) or ((abs(pagina - contatos.number) <= low_range) and abs(pagina - contatos.number) < 14))
+
+    print(cond_list)
+
+    cond_list = list(enumerate(cond_list))
+
     for contato in contatos:
         if len(contato.descricao) > 95:
             contato.descricao = contato.descricao[:95] + '...'
 
-    return render(request, 'contatos/index.html', {'contatos': contatos})
+    return render(request, 'contatos/index.html', {'contatos': contatos, 'lista': cond_list})
 
 def ver_contato(request, contato_id):
     # contato = Contato.objects.get(id=contato_id)

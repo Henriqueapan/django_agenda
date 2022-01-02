@@ -3,29 +3,29 @@
 {% block conteudo %}
 <h1 class="mt-3 mb-3">Cadastro</h1>
 
-<form method="post" action="{% url 'cadastro' %}" class="mt-4 d-flex flex-column justify-content-center">
+<form method="post" action="{% url 'cadastro' %}" class="mt-4 d-flex flex-column justify-content-center" name="cadastro">
   <div class="m-auto w-75 text-left">
     {% include 'partials/_messages.html' %}
   </div>
   {% csrf_token %}
   <div class="form-group d-flex justify-content-center">
     <label class="w-75">Nome
-    <input type="text" name="nome" class="form-control mt-1" placeholder="Digite seu nome">
+    <input type="text" name="nome" class="form-control mt-1" placeholder="Digite seu nome" value="{{ request.POST.nome }}">
     </label>
   </div>
   <div class="form-group d-flex justify-content-center">
     <label class="w-75">Sobrenome
-    <input type="text" name="sobrenome" class="form-control mt-1" placeholder="Digite seu sobrenome">
+    <input type="text" name="sobrenome" class="form-control mt-1" placeholder="Digite seu sobrenome" value="{{ request.POST.sobrenome }}">
     </label>
   </div>
   <div class="form-group d-flex justify-content-center">
     <label class="w-75">Email
-    <input type="email" required="" name="email" class="form-control mt-1" placeholder="Digite seu e-mail">
+    <input type="email" name="email" class="form-control mt-1" placeholder="Digite seu e-mail" value="{{ request.POST.email }}">
     </label>
   </div>
   <div class="form-group d-flex justify-content-center">
     <label class="w-75">Nome de usuário
-    <input type="text" name="username" class="form-control mt-1" placeholder="Digite seu nome de usuário">
+    <input type="text" name="username" class="form-control mt-1" placeholder="Digite seu nome de usuário" value="{{ request.POST.username }}">
     </label>
   </div>
   <div class="form-group d-flex justify-content-center">
@@ -34,7 +34,7 @@
     </label>
   </div>
   <div class="form-group d-flex justify-content-center">
-    <label class="w-75">Repetir a senha
+    <label class="w-75">Repetir senha
     <input type="password" name="Rpassword" class="form-control mt-1" placeholder="Digite sua senha novamente">
     </label>
   </div>
