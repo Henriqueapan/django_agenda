@@ -3,6 +3,7 @@ from django.contrib import messages, auth
 from django.core.validators import validate_email as Vemail
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from .models import FormContato
 
 
 def login(request):
@@ -82,4 +83,23 @@ def cadastro(request):
 @login_required(redirect_field_name='login')
 
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    if request.method != 'POST':
+        form = FormContato()
+        return render(request, 'accounts/dashboard.html', {'form': form})
+
+    form = FormContato(request.POST, request.FILES)
+    descricao = request.POST.get('descricao')
+
+    if not form.is_valid():
+        messages.error(request, 'Erro. Verifique os dados inseridos.')
+        form = FormContato(request.POST)
+        return render(request, 'accounts/dashboard.html', {'form': form})
+
+    if len(descricao) < 5:
+        messages.error(request, "A descrição precisa ter mais que 5 caracteres.")
+        form = FormContato(request.POST)
+        return render(request, 'accounts/dashboard.html', {'form': form})
+
+    form.save()
+    messages.success(request, f"Contato {request.POST.get('nome')} {request.POST.get('sobrenome')} criado com sucesso!")
+    return redirect('dashboard')

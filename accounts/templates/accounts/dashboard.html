@@ -6,10 +6,29 @@ Dashboard de {{ user }} |
 
 {% block conteudo %}
 <h1 class="mt-3">Olá, {% if user.first_name %} {{ user.first_name }} {% else %} {{ user }} {%endif%} {{ user.last_name }}</h1>
-  <div class="w-75 text-left" style="margin: 16px auto;">
-    {% include 'partials/_messages.html' %}
-    <p class="font-weight-bold">
-      A dashbord ainda está em desenvolvimento! :D
-    </p>
-  </div>
+<div class="w-75 text-left" style="margin: 16px auto;">
+  {% include 'partials/_messages.html' %}
+</div>
+
+<div class="container">
+  <form action="{% url 'dashboard' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+      <p class="text-left font-weight-bold mt-5" style="font-size: 2rem;">
+        Criar contato
+      </p>
+      {{ form }}
+      <tr>
+        <td colspan="2">
+          <div class="m-auto">
+            <button type="submit" class="btn btn-primary">Criar contato</button>
+          </div>
+        </td>
+
+      </tr>
+    </table>
+  </form>
+
+</div>
+
 {%endblock%}
