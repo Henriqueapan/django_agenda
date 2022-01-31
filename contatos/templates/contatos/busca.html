@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block titulo %}
+"{{ request.GET.termo }}" Busca |
+{% endblock %}
+
 {% block busca %}
     {% include 'partials/_search.html' %}
 {%endblock%}
