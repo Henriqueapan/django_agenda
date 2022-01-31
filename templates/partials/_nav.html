@@ -25,10 +25,16 @@
           {% if user.is_authenticated %} {{ user }} {% else %} Minha conta {%endif%}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          {% if not user.is_authenticated %}
           <a class="dropdown-item" href="{% url 'login' %}">Login</a>
           <a class="dropdown-item" href="{% url 'cadastro' %}">Cadastro</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item disabled" href="#">Recuperar conta</a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'dashboard' %}">Minha conta</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}">Sair da conta</a>
+          {% endif %}
         </div>
       </li>
     </ul>

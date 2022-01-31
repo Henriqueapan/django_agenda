@@ -80,5 +80,6 @@ def cadastro(request):
         return render(request, 'accounts/cadastro.html')
 
 @login_required(redirect_field_name='login')
+
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')

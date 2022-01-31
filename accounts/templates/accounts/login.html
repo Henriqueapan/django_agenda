@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
+
+{% if not user.is_authenticated %}
+
 <h1 class="mt-3 mb-3"> Login </h1>
 <form method="post" action="{% url 'login' %}" class="mt-4 d-flex flex-column justify-content-center" name="cadastro">
   <div class="m-auto w-75 text-left">
@@ -19,4 +22,19 @@
   </div>
   <button type="submit" class="btn btn-primary w-50 m-auto">Logar</button>
 </form>
+
+{% else %}
+
+<div class="w-75 text-center" style="margin: 35vh auto;">
+  <p class="font-weight-bold">
+    Você já esta logado como {{user}},
+    <a href="{% url 'dashboard' %}">clique aqui</a>
+     para ser direcionado para a dashboard, ou
+    <a href="{% url 'logout' %}">aqui </a>
+    para fazer logout.
+  </p>
+</div>
+
+{% endif %}
+
 {%endblock%}

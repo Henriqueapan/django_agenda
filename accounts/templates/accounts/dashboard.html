@@ -2,7 +2,10 @@
 
 {% block conteudo %}
 <h1 class="mt-3">Olá, {% if user.first_name %} {{ user.first_name }} {% else %} {{ user }} {%endif%} {{ user.last_name }}</h1>
-  <div class="m-auto w-75 text-left">
+  <div class="w-75 text-left" style="margin: 16px auto;">
     {% include 'partials/_messages.html' %}
+    <p class="font-weight-bold">
+      A dashbord ainda está em desenvolvimento! :D
+    </p>
   </div>
 {%endblock%}
