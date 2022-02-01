@@ -72,6 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AGENDA.wsgi.application'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

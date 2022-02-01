@@ -6,6 +6,7 @@ Dashboard de {{ user }} |
 
 {% block conteudo %}
 <h1 class="mt-3">Olá, {% if user.first_name %} {{ user.first_name }} {% else %} {{ user }} {%endif%} {{ user.last_name }}</h1>
+<hr>
 <div class="w-75 text-left" style="margin: 16px auto;">
   {% include 'partials/_messages.html' %}
 </div>
