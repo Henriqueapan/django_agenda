@@ -14,5 +14,5 @@ O banco de dados no repositório foi populado para um superuser pré-existente a
 
 Basta acessar a página de login no site e usar "admin" tanto como usuário quanto como senha.
 
-Em seguida, volte para a página inicial (agenda) clicando no ícona no canto esquerdo da barra de navegação ou através do link no menu em cascata no lado direito da barra de navegação para ver os contatos.
+Em seguida, volte para a página inicial (agenda) clicando no ícone no canto esquerdo da barra de navegação ou através do link no menu em cascata no lado direito da barra de navegação para ver os contatos.
  
