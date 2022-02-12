@@ -8,77 +8,87 @@
 {%endblock%}
 
 {%block conteudo%}
-<h1 class="mt-4">Minha agenda</h1>
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Sobrenome</th>
-      <th>Telefone</th>
-      <th>Categoria</th>
-      <th style="text-align:center">Descrição</th>
-    </tr>
-    </thead>
-    <tbody>
-      {% for contato in contatos %}
-        <tr>
-          <td>
-            {{ contato.id }}
-          </td>
-          <td>
-            <a href="{% url 'ver_contato' contato.id %}">{{ contato.nome }}</a>
-          </td>
-          <td>
-            {% if contato.sobrenome == '' %}
-              -
-            {%else%}
-              {{ contato.sobrenome }}
-            {%endif%}
-          </td>
-          <td style="white-space: nowrap !important;">{{ contato.telefone }}</td>
-          <td>{{ contato.categoria }}</td>
-          <td style="text-align:justify;">
-            {% if contato.descricao == '' %}
-              -
-            {% else %}
-              {{ contato.descricao }}
-            {%endif%}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-<nav aria-label="Page navigation" class="d-flex justify-content-center">
-  <ul class="pagination">
-    {% if contatos.has_previous %}
-      <li class="page-item"><a class="page-link" href="?p={{ contatos.previous_page_number }}{% if request.GET.termo %}&termo={{ request.GET.termo }}{%endif%}">&lt;&lt;</a></li>
-    {%else%}
-    <li class="page-item"><a class="page-link" href="?p={{ contatos.paginator.num_pages }}{% if request.GET.termo %}&termo={{ request.GET.termo }}{%endif%}">&lt;&lt;</a></li>
-    {%endif%}
-
-    {% for pagina in contatos.paginator.page_range %}
-      {% if contatos.number == pagina %}
-        <li class="page-item active"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
-      {% else %}
-        {% if pagina == contatos.paginator.num_pages or pagina == 1 %}
-          <li class="page-item"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
-        {% else %}
-          {% for val in lista %}
-            {% if val.0 == pagina|add:'-1' and val.1 %}
-              <li class="page-item"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
-            {%endif%}
-          {%endfor%}
-        {%endif%}
+{% if user.is_authenticated %}
+  {% if contatos %}
+  <h1 class="mt-4">Minha agenda</h1>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Sobrenome</th>
+        <th>Telefone</th>
+        <th>Categoria</th>
+        <th style="text-align:center">Descrição</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for contato in contatos %}
+          <tr>
+            <td>
+              {{ contato.id_by_user }}
+            </td>
+            <td>
+              <a href="{% url 'ver_contato' contato.id %}">{{ contato.nome }}</a>
+            </td>
+            <td>
+              {% if contato.sobrenome == '' %}
+                -
+              {%else%}
+                {{ contato.sobrenome }}
+              {%endif%}
+            </td>
+            <td style="white-space: nowrap !important;">{{ contato.telefone }}</td>
+            <td>{{ contato.categoria }}</td>
+            <td style="text-align:justify;">
+              {% if contato.descricao == '' %}
+                -
+              {% else %}
+                {{ contato.descricao }}
+              {%endif%}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <nav aria-label="Page navigation" class="d-flex justify-content-center">
+    <ul class="pagination">
+      {% if contatos.has_previous %}
+        <li class="page-item"><a class="page-link" href="?p={{ contatos.previous_page_number }}{% if request.GET.termo %}&termo={{ request.GET.termo }}{%endif%}">&lt;&lt;</a></li>
+      {%else%}
+      <li class="page-item"><a class="page-link" href="?p={{ contatos.paginator.num_pages }}{% if request.GET.termo %}&termo={{ request.GET.termo }}{%endif%}">&lt;&lt;</a></li>
       {%endif%}
-    {%endfor%}
-    {% if contatos.has_next %}
-      <li class="page-item"><a class="page-link" href="?p={{ contatos.next_page_number }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">&gt;&gt;</a></li>
-    {%else%}
-      <li class="page-item"><a class="page-link" href="?p=1{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">&gt;&gt;</a></li>
-    {%endif%}
-  </ul>
-</nav>
+
+      {% for pagina in contatos.paginator.page_range %}
+        {% if contatos.number == pagina %}
+          <li class="page-item active"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
+        {% else %}
+          {% if pagina == contatos.paginator.num_pages or pagina == 1 %}
+            <li class="page-item"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
+          {% else %}
+            {% for val in lista %}
+              {% if val.0 == pagina|add:'-1' and val.1 %}
+                <li class="page-item"><a class="page-link" href="?p={{ pagina }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">{{pagina}}</a></li>
+              {%endif%}
+            {%endfor%}
+          {%endif%}
+        {%endif%}
+      {%endfor%}
+      {% if contatos.has_next %}
+        <li class="page-item"><a class="page-link" href="?p={{ contatos.next_page_number }}{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">&gt;&gt;</a></li>
+      {%else%}
+        <li class="page-item"><a class="page-link" href="?p=1{% if request.GET.termo is not None %}&termo={{ request.GET.termo }}{%endif%}">&gt;&gt;</a></li>
+      {%endif%}
+    </ul>
+  </nav>
+  {% else %}
+  <h1 class="mt-5 mb-3 text-center">Você ainda não tem nenhum contato salvo! :(</h1>
+  <p class="text-center" style="font-size:1.5rem;">Para começar a preencher sua agenda, <a href="{% url 'cadastro' %}">vá para a tela de criação de contato.</a></p>
+  {% endif %}
+{% else %}
+  <h1 class="mt-5 mb-3 text-center">Bem-vindo!</h1>
+  <p class="text-center" style="font-size:1.5rem;">Para começar a usar sua agenda, <a href="{% url 'cadastro' %}">crie uma conta clicando aqui,</a> ou <a href="{% url 'login' %}">clique aqui para fazer login.</a></p>
+{% endif %}
 {% endblock %}

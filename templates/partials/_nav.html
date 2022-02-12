@@ -31,7 +31,8 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'recuperacao' %}">Recuperar conta</a>
           {% else %}
-          <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+          <a class="dropdown-item" href="{% url 'index' %}">Agenda</a>
+          <a class="dropdown-item" href="{% url 'dashboard' %}">Criar Contato</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">Sair da conta</a>
           {% endif %}

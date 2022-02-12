@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 
 # Create your models here.
@@ -20,6 +21,8 @@ class Contato(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     mostrar = models.BooleanField(default=True)
     foto = models.ImageField(blank=True, upload_to='pictures/%Y/%m/%d')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    id_by_user = models.IntegerField(null=True)
 
     def __str__(self):
         return self.nome
