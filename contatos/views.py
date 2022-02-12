@@ -6,9 +6,14 @@ from django.db.models import Q, Value
 from django.db.models.functions import Concat
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 
 def index(request):
-    contatos = Contato.objects.order_by('-id').filter(mostrar=True)
+
+    user = request.user
+
+    contatos = Contato.objects.order_by('-id_by_user').filter(Q(user=user.id) & Q(mostrar=True))
     paginator = Paginator(contatos, 15)
     page = request.GET.get('p')
     contatos = paginator.get_page(page)
@@ -32,6 +37,7 @@ def index(request):
 
     return render(request, 'contatos/index.html', {'contatos': contatos, 'lista': cond_list})
 
+@login_required(redirect_field_name='login')
 def ver_contato(request, contato_id):
     # contato = Contato.objects.get(id=contato_id)
     contato = get_object_or_404(Contato, id=contato_id)
@@ -54,7 +60,7 @@ def busca(request):
     campo = Concat('nome', Value(' '), 'sobrenome')
 
     contatos = Contato.objects.annotate(nome_completo=campo).filter(
-        Q(mostrar=True) &
+        Q(mostrar=True) & Q(user=request.user.id) &
         (Q(nome_completo__icontains=termo) | Q(nome_completo__icontains=termo.capitalize()) |
          Q(telefone__icontains=termo)) | Q(categoria__nome__icontains=termo.capitalize())
     ).order_by('-id')
@@ -88,8 +94,6 @@ def busca(request):
     messages.add_message(request, messages.SUCCESS, 'Busca concluída')
     return render(request, 'contatos/busca.html', {'contatos': contatos, 'lista': cond_list})
 
-@login_required(redirect_field_name='login')
-
 def deletar_contato(request, contato_id):
     contato = Contato.objects.get(id=contato_id)
     nome = contato.nome
@@ -97,6 +101,15 @@ def deletar_contato(request, contato_id):
     if not sobrenome:
         sobrenome = ''
     contato.delete()
+
+    cont_user = Contato.objects.filter(user=request.user.id)
+    count_cont = len(cont_user)
+    counter = 0
+
+    for contatos in Contato.objects.order_by("-id").filter(user=request.user.id):
+        contatos.id_by_user = (count_cont - counter)
+        counter = (counter + 1)
+        contatos.save()
 
     messages.warning(request, f"Contato {nome} {sobrenome} deletado com sucesso!");
 

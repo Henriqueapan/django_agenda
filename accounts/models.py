@@ -5,4 +5,4 @@ from django import forms
 class FormContato(forms.ModelForm):
     class Meta:
         model = Contato
-        exclude = ()
+        exclude = ("user", "id_by_user",)

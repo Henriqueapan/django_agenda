@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
-from .models import FormContato
+from .models import FormContato, Contato
 
 
 def login(request):
@@ -140,6 +140,11 @@ def dashboard(request):
         form = FormContato(request.POST)
         return render(request, 'accounts/dashboard.html', {'form': form})
 
-    form.save()
+    contato = form.save(commit=False)
+    contato.user = request.user
+    contato.id_by_user = (len(Contato.objects.filter(user=request.user.id)) + 1)
+    contato.save()
+
+
     messages.success(request, f"Contato {request.POST.get('nome')} {request.POST.get('sobrenome')} criado com sucesso!")
     return redirect('dashboard')
