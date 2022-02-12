@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 def index(request):
 
     user = request.user
+    print(user.id)
 
     contatos = Contato.objects.order_by('-id_by_user').filter(Q(user=user.id) & Q(mostrar=True))
     paginator = Paginator(contatos, 15)
