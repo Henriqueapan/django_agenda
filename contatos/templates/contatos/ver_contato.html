@@ -34,4 +34,9 @@
     {{ contato.descricao }}
   </dd>
 </dl>
+
+{% if user.is_authenticated %}
+  <a href="{% url 'delete' contato.id %}">Deletar contato</a>
+{% endif %}
+
 {%endblock%}

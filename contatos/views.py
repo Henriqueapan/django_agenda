@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     contatos = Contato.objects.order_by('-id').filter(mostrar=True)
@@ -86,3 +87,18 @@ def busca(request):
 
     messages.add_message(request, messages.SUCCESS, 'Busca concluída')
     return render(request, 'contatos/busca.html', {'contatos': contatos, 'lista': cond_list})
+
+@login_required(redirect_field_name='login')
+
+def deletar_contato(request, contato_id):
+    contato = Contato.objects.get(id=contato_id)
+    nome = contato.nome
+    sobrenome = contato.sobrenome
+    if not sobrenome:
+        sobrenome = ''
+    contato.delete()
+
+    messages.warning(request, f"Contato {nome} {sobrenome} deletado com sucesso!");
+
+    return redirect('index')
+
