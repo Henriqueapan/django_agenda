@@ -1,5 +1,5 @@
 # django_agenda
-Projeto de agenda de contatos feito com base no framework Django, e utilizando Bootstrap para os templates.
+Projeto de agenda de contatos feito com base no framework Django, utilizando Bootstrap para os templates.
 
 # Rodando o projeto
  - Clone o repositório usando git clone https://github.com/Henriqueapan/django_agenda.git
