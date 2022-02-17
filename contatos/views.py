@@ -2,11 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404 as _404
 from .models import Contato
 from django.core.paginator import Paginator
-from django.db.models import Q, Value
-from django.db.models.functions import Concat
+from django.db.models import Q, Value, F, Func, CharField
+from django.db.models.functions import Concat, Cast
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 
 
 def index(request):
@@ -60,10 +59,11 @@ def busca(request):
     termo = request.GET.get('termo').lower()
     campo = Concat('nome', Value(' '), 'sobrenome')
 
-    contatos = Contato.objects.annotate(nome_completo=campo).filter(
+    contatos = Contato.objects.annotate(nome_completo=campo, id_str=Cast('id', output_field=CharField())).filter(
         Q(mostrar=True) & Q(user=request.user.id) &
         (Q(nome_completo__icontains=termo) | Q(nome_completo__icontains=termo.capitalize()) |
-         Q(telefone__icontains=termo)) | Q(categoria__nome__icontains=termo.capitalize())
+         Q(telefone__icontains=termo)) | Q(categoria__nome__icontains=termo.capitalize()) |
+         Q(id_str=termo)
     ).order_by('-id')
 
     paginator = Paginator(contatos, 15)
@@ -89,7 +89,7 @@ def busca(request):
             contato.descricao = contato.descricao[:95] + '...'
 
     if not contatos.object_list:
-        messages.add_message(request, messages.WARNING, 'Não foram encontrados contatos com os termos da busca.')
+        messages.add_message(request, messages.WARNING, f"Não foram encontrados contatos com o termo {request.GET.get('termo')}")
         return redirect('index')
 
     messages.add_message(request, messages.SUCCESS, 'Busca concluída')
