@@ -5,7 +5,7 @@ Projeto de agenda de contatos feito com base no framework Django, utilizando Boo
  - Clone o repositório usando git clone https://github.com/Henriqueapan/django_agenda.git
  - Instale o Python (certifique-se de instalar o pip também), e, em seguida, instale o Django (pip install django)
  - Instale o Pillow (pip install pillow) para que o Django consiga manipular as Imagens dos contatos (sem isso, o projeto não vai rodar)
- - A partir da raíz do projeto, execute "python manage.py runserver" e, em seguida e clique no link exibido no terminal
+ - A partir da raíz do projeto, execute "python manage.py runserver" e, em seguida clique no link exibido no terminal
 
 # Banco de dados pré populado e superuser
 O banco de dados no repositório foi populado para um superuser pré-existente através de um script python para que, caso o usuário não queira adicionar seus próprios contatos, ele possa pegar uma agenda feita.
